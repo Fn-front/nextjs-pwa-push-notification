@@ -28,6 +28,31 @@ export const NotificationsPush = () => {
     setMessage(res.message)
   };
 
+
+  // 5秒後に通知を許可する処理
+  const handleFiveSecondsPush = async () => {
+    
+    const registration = await navigator.serviceWorker.ready    
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
+    });
+
+    const data = {
+      data: subscription,
+      title: '5秒後になりました',
+      body: 'おい5秒後やで',
+      url: '/'
+    }
+    
+    const set = setTimeout(async() => {
+      const res = await ApiNotificationsPush(data);
+      setMessage(res.message)
+      clearTimeout(set)
+    }, 5000)
+
+  };
+
   // Base64 の VAPID 公開鍵を Uint8Array に変換する関数
   const urlBase64ToUint8Array = (base64String: string) => {
     const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -47,7 +72,8 @@ export const NotificationsPush = () => {
   return (
     <>
       <h2 className="c_h2" style={{marginTop: '32px'}}>通知を送信</h2>
-      <button type='button' onClick={handlePush} className={`${style.c_button}`}>通知を送信</button>
+      <button type='button' onClick={handlePush} className={`${style.c_button}`}>通知を送信</button><br />
+      <button type='button' onClick={handleFiveSecondsPush} className={`${style.c_button}`} style={{marginTop: '16px'}}>5秒後に通知を送信</button>
       <p style={{marginTop: '16px'}}>{ message }</p>
     </>
   );
