@@ -20,34 +20,21 @@ export const NotificationsPush = () => {
       setMessage('プッシュ通知が許可されていません。ブラウザの設定を変更してください');
     }
 
-    const response = async(subscription: any) => {
-      const data = {
-        data: subscription,
-        title: 'タイトルやで',
-        body: '内容やで',
-        url: '/'
-      }
-      
-      const res = await ApiNotificationsPush(data);
-      setMessage(res.message)
-    }
-
-    const test = async(reg: any) => {
-      // ここがsafariで動かない
-      await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
-      })
-      .then((subscription: any) => {
-        setMessage('subscription');
-        response(subscription)
-      }, (err: any) => setMessage(err.message))
-    }
-
     const registration = await navigator.serviceWorker.ready
-    .then((reg) => {
-      test(reg)
+    .then((serviceWorker) => {
+      if (!serviceWorker.pushManager) {
+        // Maybe iOS on iPhone or iPad - should ask for adding to Home Screen
+        setMessage('pushManager is not enabled');
+        return;
+      }
+      else{
+        setMessage('success')
+      }     
     })
+    // const subscription = await registration.pushManager.subscribe({
+    //   userVisibleOnly: true,
+    //   applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
+    // });
         
     // const data = {
     //   data: subscription,
