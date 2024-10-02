@@ -2,8 +2,6 @@
 self.addEventListener('push', function (event) {  
   
   const data = event.data.json();
-  console.log(data.url);
-  
   const title = data.title || '新しいアクションがありました';
   const options = {
     body: data.body || '詳細はクリックして確認してください',
