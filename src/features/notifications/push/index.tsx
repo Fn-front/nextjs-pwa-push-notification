@@ -21,20 +21,12 @@ export const NotificationsPush = () => {
     }
 
     const registration = await navigator.serviceWorker.ready
-    .then((serviceWorker) => {      
-      if (!serviceWorker.pushManager.subscribe) {
-        // Maybe iOS on iPhone or iPad - should ask for adding to Home Screen
-        setMessage('pushManager is not enabled');
-        return;
-      }
-      else{
-        setMessage('success')
-      }     
-    })
-    // const subscription = await registration.pushManager.subscribe({
-    //   userVisibleOnly: true,
-    //   applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
-    // });
+    const subscriptionOptions = {
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!)
+  };
+    const subscription = await registration.pushManager.subscribe(subscriptionOptions);
+    setMessage('res.message')
         
     // const data = {
     //   data: subscription,
