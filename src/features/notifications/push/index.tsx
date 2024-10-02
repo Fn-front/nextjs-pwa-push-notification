@@ -1,8 +1,12 @@
 'use client'
 
+import { useState } from 'react';
+import { ApiNotificationsPush } from '@/hooks/api/notificationsPush';
 import style from './button.module.scss'
 
 export const NotificationsPush = () => {
+
+  const [message, setMessage] = useState<string>('');
 
   // 通知を許可する処理
   const handlePush = async () => {
@@ -12,16 +16,14 @@ export const NotificationsPush = () => {
       applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
     });
 
-    const res = await fetch('/api/push', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(subscription),
-    });
+    const data = {
+      data: subscription,
+      title: 'タイトルやで',
+      body: '内容やで',
+    }
 
-    console.log(res);
-    
+    const res = await ApiNotificationsPush(data);
+    setMessage(res.message)
   };
 
   // Base64 の VAPID 公開鍵を Uint8Array に変換する関数
@@ -44,6 +46,7 @@ export const NotificationsPush = () => {
     <>
       <h2 className="c_h2" style={{marginTop: '32px'}}>通知を送信</h2>
       <button type='button' onClick={handlePush} className={`${style.c_button}`}>通知を送信</button>
+      <p style={{marginTop: '16px'}}>{ message }</p>
     </>
   );
 }
