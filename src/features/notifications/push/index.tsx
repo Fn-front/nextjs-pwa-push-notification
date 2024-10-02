@@ -10,6 +10,8 @@ export const NotificationsPush = () => {
 
   // 通知を許可する処理
   const handlePush = async () => {
+
+    setMessage('クリックしたよ')
     
     const registration = await navigator.serviceWorker.ready    
     const subscription = await registration.pushManager.subscribe({
@@ -31,6 +33,8 @@ export const NotificationsPush = () => {
 
   // 5秒後に通知を許可する処理
   const handleFiveSecondsPush = async () => {
+
+    setMessage('クリックしたよ')
     
     const registration = await navigator.serviceWorker.ready    
     const subscription = await registration.pushManager.subscribe({
