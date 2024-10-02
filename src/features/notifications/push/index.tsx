@@ -72,8 +72,8 @@ export const NotificationsPush = () => {
   return (
     <>
       <h2 className="c_h2" style={{marginTop: '32px'}}>通知を送信</h2>
-      <button type='button' onClick={handlePush} className={`${style.c_button}`}>通知を送信</button><br />
-      <button type='button' onClick={handleFiveSecondsPush} className={`${style.c_button}`} style={{marginTop: '16px'}}>5秒後に通知を送信</button>
+      <button type='button' onClick={() => handlePush()} className={`${style.c_button}`}>通知を送信</button><br />
+      <button type='button' onClick={() => handleFiveSecondsPush()} className={`${style.c_button}`} style={{marginTop: '16px'}}>5秒後に通知を送信</button>
       <p style={{marginTop: '16px'}}>{ message }</p>
     </>
   );
