@@ -33,3 +33,6 @@ jobs:
 
       - name: app-build
         run: npm run build
+        env:
+          NEXT_PUBLIC_VAPID_KEY: ${{ secrets.NEXT_PUBLIC_VAPID_KEY }}
+          NEXT_PRIVATE_VAPID_KEY: ${{ secrets.NEXT_PRIVATE_VAPID_KEY }}

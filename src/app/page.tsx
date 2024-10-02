@@ -1,7 +1,16 @@
+'use client'
+
+import NotificationsAllow from '@/features/notifications/allow';
+import NotificationsPush from '@/features/notifications/push';
+import Pwa from '@/features/pwa'
+
 export default function Home() {
+  
   return (
     <>
-      <h2 className="c_h2">テンプレ</h2>
+      <NotificationsAllow />
+      <NotificationsPush />
+      <Pwa />
     </>
   );
 }
