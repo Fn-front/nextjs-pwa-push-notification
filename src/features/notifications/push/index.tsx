@@ -20,13 +20,31 @@ export const NotificationsPush = () => {
       setMessage('プッシュ通知が許可されていません。ブラウザの設定を変更してください');
     }
 
-    const registration = await navigator.serviceWorker.ready
-    .then((reg) => {
-      const subscription = reg.pushManager.subscribe({
+    const test = async(reg: any) => {
+      const subscription = await reg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
       });
+
       setMessage('subscription');
+
+      const data = {
+        data: subscription,
+        title: 'タイトルやで',
+        body: '内容やで',
+        url: '/'
+      }
+
+      console.log(data);
+      
+      
+      const res = await ApiNotificationsPush(data);
+      setMessage(res.message)
+    }
+
+    const registration = await navigator.serviceWorker.ready
+    .then((reg) => {
+      test(reg)
     })
         
     // const data = {
