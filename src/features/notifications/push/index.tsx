@@ -20,10 +20,10 @@ export const NotificationsPush = () => {
       setMessage('プッシュ通知が許可されていません。ブラウザの設定を変更してください');
     }
 
-    const registration = await navigator.serviceWorker.ready    
+    const registration = await navigator.serviceWorker.ready
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
+      applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
     });
     
     const data = {
@@ -40,8 +40,6 @@ export const NotificationsPush = () => {
 
   // 5秒後に通知を許可する処理
   const handleFiveSecondsPush = async () => {
-
-    setMessage('クリックしたよ')
     
     const registration = await navigator.serviceWorker.ready    
     const subscription = await registration.pushManager.subscribe({
