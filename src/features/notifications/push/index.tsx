@@ -10,7 +10,8 @@ export const NotificationsPush = () => {
 
   // 通知を許可する処理
   const handlePush = async () => {
-    const registration = await navigator.serviceWorker.ready
+    
+    const registration = await navigator.serviceWorker.ready    
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
@@ -20,8 +21,9 @@ export const NotificationsPush = () => {
       data: subscription,
       title: 'タイトルやで',
       body: '内容やで',
+      url: '/'
     }
-
+    
     const res = await ApiNotificationsPush(data);
     setMessage(res.message)
   };

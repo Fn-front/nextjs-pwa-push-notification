@@ -9,12 +9,13 @@ webpush.setVapidDetails('mailto:you@example.com', publicVapidKey!, privateVapidK
 
 export const POST = async(req: any, res: any) => {
   try {
-    const { data, title, body } = await req.json();
+    const { data, title, body, url } = await req.json();    
     const subscription = data;
     const payload = JSON.stringify({
       title: title,
       body: body,
-    });
+      url: url
+    });    
     
     webpush.sendNotification(subscription, payload)
   
