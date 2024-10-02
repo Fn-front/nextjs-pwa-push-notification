@@ -12,11 +12,11 @@ export const NotificationsPush = () => {
   const handlePush = async () => {
 
     const registration = await navigator.serviceWorker.ready
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
+    });    
     setMessage('クリックしたよ')
-    // const subscription = await registration.pushManager.subscribe({
-    //   userVisibleOnly: true,
-    //   applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
-    // });    
     
     // const data = {
     //   data: subscription,
