@@ -20,7 +20,7 @@ export const NotificationsAllow = () => {
   return (
     <>
       <h2 className="c_h2">通知の許可</h2>
-      <button type='button' onClick={handleAskNotificationPermission} className={`${style.c_button}`}>通知を許可しますか？</button>
+      <button type='button' onClick={() => handleAskNotificationPermission()} className={`${style.c_button}`}>通知を許可しますか？</button>
       <p>{ message }</p>
     </>
   );
