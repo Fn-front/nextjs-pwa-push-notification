@@ -1,8 +1,7 @@
 // プッシュ通知（web-push）受信時の処理
 self.addEventListener('push', function (event) {  
-  const data = event.data.json();
-  console.log(data.title);
   
+  const data = event.data.json();
   const title = data.title || '新しいアクションがありました';
   const options = {
     body: data.body || '詳細はクリックして確認してください',
