@@ -21,6 +21,7 @@ export const NotificationsPush = () => {
     }
 
     const registration = await navigator.serviceWorker.ready
+    setMessage('registration');
     // const subscription = await registration.pushManager.subscribe({
     //   userVisibleOnly: true,
     //   applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
@@ -46,6 +47,7 @@ export const NotificationsPush = () => {
       },
     };
 
+    setMessage('show前');
     registration.showNotification(title, options)
   };
 
