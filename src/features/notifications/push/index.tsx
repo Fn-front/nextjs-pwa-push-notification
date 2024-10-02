@@ -11,36 +11,30 @@ export const NotificationsPush = () => {
   // 通知を許可する処理
   const handlePush = async () => {
 
-    const test = async(reg: any) => {
-      
-      const subscription = await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
-      });
-      
-      setMessage('pushManager');
-      
-
-      const data = {
-        data: subscription,
-        title: 'タイトルやで',
-        body: '内容やで',
-        url: '/'
-      };
-
-      setMessage('data');
-
-      const res = await ApiNotificationsPush(data);
-      setMessage(res.message)
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      setMessage('このブラウザはプッシュ通知に対応していません');
     }
 
-    await navigator.serviceWorker.ready
-    .then((reg) => {
+    const permission = await Notification.requestPermission();
+    if (permission === 'denied' || permission === 'default') {
+      setMessage('プッシュ通知が許可されていません。ブラウザの設定を変更してください');
+    }
 
-      test(reg)
-        
-    })
+    const registration = await navigator.serviceWorker.ready    
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
+    });
     
+    const data = {
+      data: subscription,
+      title: 'タイトルやで',
+      body: '内容やで',
+      url: '/'
+    }
+    
+    const res = await ApiNotificationsPush(data);
+    setMessage(res.message)
   };
 
 
