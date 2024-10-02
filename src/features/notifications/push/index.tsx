@@ -11,24 +11,35 @@ export const NotificationsPush = () => {
   // 通知を許可する処理
   const handlePush = async () => {
 
-    const registration = await navigator.serviceWorker.ready
+    const test = async(reg: any) => {
+      const subscription = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
+      });
+
+      setMessage('pushManager');
+      
+
+      const data = {
+        data: subscription,
+        title: 'タイトルやで',
+        body: '内容やで',
+        url: '/'
+      };
+
+      setMessage('data');
+
+      const res = await ApiNotificationsPush(data);
+      setMessage(res.message)
+    }
+
+    await navigator.serviceWorker.ready
     .then((reg) => {
-        const subscription = reg.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
-        });    
-        setMessage('クリックしたよ')
+
+      test(reg)
+        
     })
     
-    // const data = {
-    //   data: subscription,
-    //   title: 'タイトルやで',
-    //   body: '内容やで',
-    //   url: '/'
-    // }
-    
-    // const res = await ApiNotificationsPush(data);
-    // setMessage(res.message)
   };
 
 
