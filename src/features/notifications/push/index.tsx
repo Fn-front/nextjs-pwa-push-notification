@@ -8,37 +8,42 @@ export const NotificationsPush = () => {
 
   const [message, setMessage] = useState<any>('');
 
-  // Base64 の VAPID 公開鍵を Uint8Array に変換する関数
-  const urlBase64ToUint8Array = (base64String: string) => {
-    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding)
-      .replace(/\-/g, '+')
-      .replace(/_/g, '/');
-
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-
-    for (let i = 0; i < rawData.length; ++i) {
-      outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
-  };
-
   // 通知を許可する処理
   const handlePush = async () => {
 
     const test = async(reg: any) => {
-
+      
       const subscription = await reg.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
+        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
       });
+
+      function ArrayBufferToString(arrayBuffer: any) {
+        return btoa(
+          String.fromCharCode.apply(null, new Uint8Array(arrayBuffer))
+        )
+          .replace(/\+/g, "-")
+          .replace(/\//g, "_");
+      }
+
+      const endpoint = subscription.endpoint;
+      const p256dh = ArrayBufferToString(subscription.getKey("p256dh"));
+      const auth = ArrayBufferToString(subscription.getKey("auth"));
+
+      const end = {
+        endpoint: endpoint,
+        keys: {
+          auth: auth,
+          p256dh: p256dh
+        }
+      };
+      
 
       setMessage('pushManager');
       
 
       const data = {
-        data: subscription,
+        data: end,
         title: 'タイトルやで',
         body: '内容やで',
         url: '/'
@@ -84,6 +89,22 @@ export const NotificationsPush = () => {
       clearTimeout(set)
     }, 5000)
 
+  };
+
+  // Base64 の VAPID 公開鍵を Uint8Array に変換する関数
+  const urlBase64ToUint8Array = (base64String: string) => {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
   };
   
   return (
