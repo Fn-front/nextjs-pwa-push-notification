@@ -21,18 +21,11 @@ export const NotificationsPush = () => {
     }
 
     const registration = await navigator.serviceWorker.ready
-    let subscription;
-    try {
-        subscription = await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
-        });
-    } catch (error) {
-      setMessage(error)
-    }
-    
-    // console.log(subscription);
-    
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
+    });
+        
     const data = {
       data: subscription,
       title: 'タイトルやで',
