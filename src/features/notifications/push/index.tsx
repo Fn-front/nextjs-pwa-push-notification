@@ -21,8 +21,8 @@ export const NotificationsPush = () => {
     }
 
     const registration = await navigator.serviceWorker.ready
-    .then((serviceWorker) => {
-      if (!serviceWorker.pushManager) {
+    .then((serviceWorker) => {      
+      if (!serviceWorker.pushManager.subscribe) {
         // Maybe iOS on iPhone or iPad - should ask for adding to Home Screen
         setMessage('pushManager is not enabled');
         return;
