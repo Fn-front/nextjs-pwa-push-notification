@@ -1,19 +1,24 @@
 'use client'
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const Pwa = () => {
+
+  const [message, setMessage] = useState<any>('');
+
   useEffect(() => {
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
       navigator.serviceWorker.register('/push-worker.js').then(registration => {
-        console.log('Service Worker registered with scope:', registration);
+        setMessage('Service Worker registered with scope: success'+ registration);
       }).catch(error => {
-        console.error('Service Worker registration failed:', error);
+        setMessage('Service Worker registration failed: error' + error);
       });
     }
   }, []);
   return (
-    <></>
+    <>
+      <p>{ message }</p>
+    </>
   );
 }
 
