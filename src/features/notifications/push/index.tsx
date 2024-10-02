@@ -41,7 +41,7 @@ export const NotificationsPush = () => {
       .then((subscription: any) => {
         setMessage('subscription');
         response(subscription)
-      }, (err: any) => console.warn(err))
+      }, (err: any) => setMessage(err.message))
     }
 
     const registration = await navigator.serviceWorker.ready
