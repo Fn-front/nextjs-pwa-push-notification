@@ -11,14 +11,14 @@ export const NotificationsPush = () => {
   // 通知を許可する処理
   const handlePush = async () => {
 
-    setMessage('クリックしたよ')
     
     const registration = await navigator.serviceWorker.ready    
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
     });
-
+    
+    setMessage('クリックしたよ')
     const data = {
       data: subscription,
       title: 'タイトルやで',
