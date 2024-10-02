@@ -17,33 +17,12 @@ export const NotificationsPush = () => {
         userVisibleOnly: true,
         applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
       });
-
-      function ArrayBufferToString(arrayBuffer: any) {
-        return btoa(
-          String.fromCharCode.apply(null, new Uint8Array(arrayBuffer))
-        )
-          .replace(/\+/g, "-")
-          .replace(/\//g, "_");
-      }
-
-      const endpoint = subscription.endpoint;
-      const p256dh = ArrayBufferToString(subscription.getKey("p256dh"));
-      const auth = ArrayBufferToString(subscription.getKey("auth"));
-
-      const end = {
-        endpoint: endpoint,
-        keys: {
-          auth: auth,
-          p256dh: p256dh
-        }
-      };
       
-
       setMessage('pushManager');
       
 
       const data = {
-        data: end,
+        data: subscription,
         title: 'タイトルやで',
         body: '内容やで',
         url: '/'
