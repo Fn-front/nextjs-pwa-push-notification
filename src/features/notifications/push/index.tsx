@@ -6,28 +6,27 @@ import style from './button.module.scss'
 
 export const NotificationsPush = () => {
 
-  const [message, setMessage] = useState<string>('');
+  const [message, setMessage] = useState<any>('');
 
   // 通知を許可する処理
   const handlePush = async () => {
 
-    
-    const registration = await navigator.serviceWorker.ready    
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
-    });
-    
+    const registration = await navigator.serviceWorker.ready
     setMessage('クリックしたよ')
-    const data = {
-      data: subscription,
-      title: 'タイトルやで',
-      body: '内容やで',
-      url: '/'
-    }
+    // const subscription = await registration.pushManager.subscribe({
+    //   userVisibleOnly: true,
+    //   applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!),
+    // });    
     
-    const res = await ApiNotificationsPush(data);
-    setMessage(res.message)
+    // const data = {
+    //   data: subscription,
+    //   title: 'タイトルやで',
+    //   body: '内容やで',
+    //   url: '/'
+    // }
+    
+    // const res = await ApiNotificationsPush(data);
+    // setMessage(res.message)
   };
 
 
