@@ -11,22 +11,22 @@ export const NotificationsPush = () => {
   // 通知を許可する処理
   const handlePush = async () => {
 
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-      setMessage('このブラウザはプッシュ通知に対応していません');
-    }
+  //   if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+  //     setMessage('このブラウザはプッシュ通知に対応していません');
+  //   }
 
-    const permission = await Notification.requestPermission();
-    if (permission === 'denied' || permission === 'default') {
-      setMessage('プッシュ通知が許可されていません。ブラウザの設定を変更してください');
-    }
+  //   const permission = await Notification.requestPermission();
+  //   if (permission === 'denied' || permission === 'default') {
+  //     setMessage('プッシュ通知が許可されていません。ブラウザの設定を変更してください');
+  //   }
 
-    const registration = await navigator.serviceWorker.ready
-    const subscriptionOptions = {
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!)
-  };
-    const subscription = await registration.pushManager.subscribe(subscriptionOptions);
-    setMessage('res.message')
+  //   const registration = await navigator.serviceWorker.ready
+  //   const subscriptionOptions = {
+  //     userVisibleOnly: true,
+  //     applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!)
+  // };
+  //   const subscription = await registration.pushManager.subscribe(subscriptionOptions);
+  //   setMessage('res.message')
         
     // const data = {
     //   data: subscription,
@@ -49,6 +49,28 @@ export const NotificationsPush = () => {
     // };
 
     // registration.showNotification(title, options)
+
+    navigator.serviceWorker.ready.then(async function (serviceWorker) {
+      if (!serviceWorker.pushManager) {
+          // Maybe iOS on iPhone or iPad - should ask for adding to Home Screen
+          alert('pushManager is not enabled');
+          return;
+      }            
+      let subscriptionOptions = {
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!)
+      };
+      let subscription = await serviceWorker.pushManager.subscribe(subscriptionOptions);
+      console.log('Subscription token:', subscription.toJSON());
+      const data = {
+        data: subscription.toJSON(),
+        title: 'タイトルやで',
+        body: '内容やで',
+        url: '/'
+      }
+      const res = await ApiNotificationsPush(data);
+      setMessage(res.message)
+  });
   };
 
 
