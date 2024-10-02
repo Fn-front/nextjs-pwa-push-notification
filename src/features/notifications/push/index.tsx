@@ -24,7 +24,8 @@ export const NotificationsPush = () => {
     let subscription;
     try {
         subscription = await registration.pushManager.subscribe({
-          applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
+          userVisibleOnly: true,
+          // applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
         });
     } catch (error) {
       setMessage(error)
