@@ -20,11 +20,10 @@ export const NotificationsPush = () => {
       setMessage('プッシュ通知が許可されていません。ブラウザの設定を変更してください');
     }
 
-    navigator.serviceWorker.register('/sw.js');
     const registration = await navigator.serviceWorker.ready
     const subscriptionOptions = {
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array('BFGzZV5KfGWlB2IpMzZDd8G9sMReKN0kaOrSpTG-_uoERexNex-NnfPjtrHKiNOcjhmBKh2ZeR8PDNRX-1h6AAg')
+      applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!)
   };
     const subscription = await registration.pushManager.subscribe(subscriptionOptions);
     setMessage('res.message')
