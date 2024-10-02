@@ -61,6 +61,7 @@ export const NotificationsPush = () => {
           applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!)
       };
       let subscription = await serviceWorker.pushManager.subscribe(subscriptionOptions);
+      setMessage('subscription')
       console.log('Subscription token:', subscription.toJSON());
       const data = {
         data: subscription.toJSON(),
