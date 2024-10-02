@@ -21,35 +21,32 @@ export const NotificationsPush = () => {
     }
 
     const registration = await navigator.serviceWorker.ready
-    // const subscriptionOptions = {
-    //   userVisibleOnly: true,
-    //   applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_KEY!)
-    // };
-    // const subscription = await registration.pushManager.subscribe(subscriptionOptions);
-    // setMessage('res.message')
-        
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
+    });
+    
     const data = {
-      data: registration,
+      data: subscription,
       title: 'タイトルやで',
       body: '内容やで',
       url: '/'
     }
     
-    // const res = await ApiNotificationsPush(data);
-    // setMessage(res.message)
+    const res = await ApiNotificationsPush(data);
+    setMessage(res.message)
 
-    const title = data.title || '新しいアクションがありました';
-    const options = {
-      body: data.body || '詳細はクリックして確認してください',
-      icon: '/icons/192x192.png',
-      badge: '/icons/192x192.png',
-      data: {
-        url: data.url,
-      },
-    };
+    // const title = data.title || '新しいアクションがありました';
+    // const options = {
+    //   body: data.body || '詳細はクリックして確認してください',
+    //   icon: '/icons/192x192.png"',
+    //   badge: '/icons/192x192.png"',
+    //   data: {
+    //     url: data.url,
+    //   },
+    // };
 
-    registration.showNotification(title, options)
-
+    // registration.showNotification(title, options)
   };
 
 
